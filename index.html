@@ -54,7 +54,23 @@
       <label for="authEmail">E-mail</label><input id="authEmail" type="email" autocomplete="email" required>
       <label for="authPassword">Senha</label><input id="authPassword" type="password" autocomplete="current-password" required>
       <button class="primary" type="submit">Entrar</button>
+      <button class="auth-link" id="openRegister" type="button">Criar uma conta</button>
       <p class="auth-status" id="authStatus" role="status"></p>
+    </form>
+  </div>
+  <div class="auth-modal" id="registerModal" hidden>
+    <form class="auth-card" id="registerForm">
+      <button class="auth-close" id="closeRegister" type="button" aria-label="Fechar">&times;</button>
+      <p class="eyebrow">Novo acesso</p>
+      <h2>Criar conta</h2>
+      <p class="auth-help">Cadastre-se para acompanhar solicitações e atuar no território.</p>
+      <label for="registerName">Nome completo</label><input id="registerName" type="text" autocomplete="name" required>
+      <label for="registerEmail">E-mail</label><input id="registerEmail" type="email" autocomplete="email" required>
+      <label for="registerPassword">Senha</label><input id="registerPassword" type="password" minlength="8" autocomplete="new-password" required>
+      <label for="registerConfirm">Confirmar senha</label><input id="registerConfirm" type="password" minlength="8" autocomplete="new-password" required>
+      <p class="auth-validation" id="registerValidation" role="status"></p>
+      <button class="primary" id="registerSubmit" type="submit" disabled>Criar conta</button>
+      <button class="auth-link" id="backToLogin" type="button">Já tenho uma conta</button>
     </form>
   </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>

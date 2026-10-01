@@ -5,11 +5,31 @@
   const closeButton = document.getElementById('closeAuth');
   const status = document.getElementById('authStatus');
   const userLabel = document.getElementById('userLabel');
+  const registerModal = document.getElementById('registerModal');
+  const registerForm = document.getElementById('registerForm');
+  const registerSubmit = document.getElementById('registerSubmit');
+  const registerValidation = document.getElementById('registerValidation');
   const realtime = () => window.GuaribasRealtime?.client;
   if (!loginButton || !modal || !form) return;
 
   const show = visible => { modal.hidden = !visible; };
+  const showRegister = visible => { registerModal.hidden = !visible; };
   const setMessage = message => { status.textContent = message; };
+
+  function validateRegister() {
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    const confirm = document.getElementById('registerConfirm').value;
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const valid = name.length >= 3 && validEmail && password.length >= 8 && password === confirm;
+    registerSubmit.disabled = !valid;
+    registerValidation.textContent = !name || name.length >= 3 ? '' : 'Informe seu nome completo.';
+    if (name.length >= 3 && !validEmail && email) registerValidation.textContent = 'Informe um e-mail válido.';
+    if (password && password.length < 8) registerValidation.textContent = 'A senha deve ter pelo menos 8 caracteres.';
+    if (confirm && password !== confirm) registerValidation.textContent = 'As senhas não coincidem.';
+    return valid;
+  }
 
   function updateSession(session) {
     const user = session?.user;
@@ -28,6 +48,33 @@
   });
   closeButton.addEventListener('click', () => show(false));
   modal.addEventListener('click', event => { if (event.target === modal) show(false); });
+  document.getElementById('openRegister').addEventListener('click', () => { show(false); showRegister(true); });
+  document.getElementById('closeRegister').addEventListener('click', () => showRegister(false));
+  document.getElementById('backToLogin').addEventListener('click', () => { showRegister(false); show(true); });
+  registerModal.addEventListener('click', event => { if (event.target === registerModal) showRegister(false); });
+  registerForm.querySelectorAll('input').forEach(input => input.addEventListener('input', validateRegister));
+
+  registerForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!validateRegister()) return;
+    const client = realtime();
+    if (!client) return setMessage('Supabase ainda não está disponível.');
+    registerSubmit.disabled = true;
+    registerValidation.textContent = 'Criando conta...';
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    const { error } = await client.auth.signUp({ email, password, options: { data: { nome: name } } });
+    if (error) {
+      registerSubmit.disabled = false;
+      registerValidation.textContent = error.message;
+      return;
+    }
+    showRegister(false);
+    show(true);
+    setMessage('Conta criada. Verifique seu e-mail antes de entrar.');
+    registerForm.reset();
+  });
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
