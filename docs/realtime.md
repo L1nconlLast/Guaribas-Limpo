@@ -9,4 +9,6 @@ A demo continua funcionando com dados locais quando `window.GUARIBAS_SUPABASE` n
 
 O cliente opcional assina mudanças em `ocorrencias`, `domicilios`, `solicitacoes` e `equipes`. Técnicos autenticados também podem transmitir sua posição via `watchPosition`; a política RLS deve ser revisada antes de usar em produção.
 
+Para preparar uma demonstração completa, execute `supabase/demo-seed.sql` depois do schema. Ele popula os domicílios, a rede e duas ocorrências usadas pelo MVP.
+
 A chave `service_role` nunca deve ser enviada ao navegador.
