@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Guaribas Limpo: mapear, conectar e medir o saneamento.">
+  <title>Guaribas Limpo</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><h1>Guaribas Limpo</h1><span>Dados demonstrativos</span></div>
+    <nav class="tabs" aria-label="Navegação principal">
+      <button class="tab active" data-tab="map">Mapa</button>
+      <button class="tab" data-tab="connect">Conecte sua Casa</button>
+      <button class="tab" data-tab="panel">Painel</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="page-map" class="page active-page">
+      <aside class="sidebar">
+        <input id="search" class="search" type="search" placeholder="Buscar endereço ou ID..." aria-label="Buscar">
+        <h2>Camadas visíveis</h2>
+        <label><input type="checkbox" id="layerNetwork" checked> Rede coletora</label>
+        <label><input type="checkbox" id="layerHomes" checked> Domicílios conectados</label>
+        <label><input type="checkbox" id="layerPending" checked> Domicílios pendentes</label>
+        <label><input type="checkbox" id="layerIncidents" checked> Ocorrências</label>
+        <div class="stats"><div><b id="statMapped">0</b><small>mapeados</small></div><div><b id="statPending">0</b><small>pendentes</small></div><div><b id="statIncidents">0</b><small>ocorrências</small></div><div><b id="statRequests">18</b><small>solicitações</small></div></div>
+        <article id="selectedCard" class="card"><h2>Imóvel selecionado</h2><p>Escolha um domicílio no mapa para abrir a ficha operacional.</p></article>
+        <button class="primary" id="newInspection">Registrar vistoria</button>
+      </aside>
+      <div class="map-wrap"><div id="map"></div><div class="map-note"><b>Mapear → conectar → medir</b><br>Dados fictícios para demonstração.</div></div>
+    </section>
+
+    <section id="page-connect" class="page content-page">
+      <div class="content narrow"><header><p class="eyebrow">Acesso ao saneamento</p><h2>Conecte sua Casa</h2><p>Consulte sua situação, verifique a Tarifa Social e solicite sua ligação.</p></header>
+        <article class="card steps"><div class="step"><strong>1</strong><div><h3>Informe seu CPF ou NIS</h3><p>Consulta simulada do imóvel na última milha.</p><div class="inline"><input id="cpfInput" placeholder="000.000.000-00 ou NIS"><button class="primary" id="btnConsultar">Consultar</button></div></div></div>
+        <div class="step"><strong>2</strong><div><h3>Situação do imóvel</h3><div id="resultBox" class="result hidden"><p><span>Endereço</span><b id="resAddress">-</b></p><p><span>Rede coletora</span><b id="resRede">-</b></p><p><span>Conexão</span><b id="resConexao">-</b></p><p><span>Tarifa Social</span><b id="resTarifa">-</b></p><p><span>Economia estimada</span><b id="resEconomia">-</b></p></div></div></div>
+        <div class="step"><strong>3</strong><div><h3>Solicitar ligação</h3><p>Após confirmar, você receberá um protocolo.</p><button class="primary" id="btnSolicitar" disabled>Solicitar ligação</button><div id="protocolBox" class="protocol hidden">Protocolo <b id="protocolNumber">-</b></div></div></div></article>
+      </div>
+    </section>
+
+    <section id="page-panel" class="page content-page"><div class="content"><header><p class="eyebrow">Visão operacional</p><h2>Painel de Impacto</h2><p>Indicadores territoriais do Guaribas Limpo.</p></header><div class="kpis"><article><b id="kpiMapped">127</b><span>Domicílios mapeados</span></article><article><b id="kpiPending">34</b><span>Conexões pendentes</span></article><article><b id="kpiIncidents">12</b><span>Pontos irregulares</span></article><article><b id="kpiRequests">18</b><span>Solicitações</span></article><article><b id="kpiConversion">50%</b><span>Taxa de conversão</span></article><article><b>1.240</b><span>m³/mês desviados do rio</span></article></div><div class="charts"><article class="card"><h3>Distribuição por situação</h3><div class="bar"><span>Conectados</span><i style="width:62%"></i><b>79</b></div><div class="bar"><span>Pendentes</span><i style="width:27%"></i><b>34</b></div><div class="bar"><span>Sem rede</span><i style="width:11%"></i><b>14</b></div></article><article class="card"><h3>Ocorrências por tipo</h3><div class="bar"><span>Esgoto aberto</span><i class="red" style="width:50%"></i><b>6</b></div><div class="bar"><span>Descarte irregular</span><i class="orange" style="width:33%"></i><b>4</b></div><div class="bar"><span>Vazamento</span><i class="blue" style="width:17%"></i><b>2</b></div></article></div></div></section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script src="src/app.js"></script>
+</body>
+</html>
