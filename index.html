@@ -16,6 +16,7 @@
       <button class="tab" data-tab="connect">Conecte sua Casa</button>
       <button class="tab" data-tab="panel">Painel</button>
     </nav>
+    <div class="session-controls"><span id="userLabel">Modo demonstrativo</span><button class="auth-button" id="authButton">Entrar</button></div>
   </header>
 
   <main>
@@ -44,10 +45,23 @@
 
     <section id="page-panel" class="page content-page"><div class="content"><header><p class="eyebrow">Visão operacional</p><h2>Painel de Impacto</h2><p>Indicadores territoriais do Guaribas Limpo.</p></header><div class="kpis"><article><b id="kpiMapped">127</b><span>Domicílios mapeados</span></article><article><b id="kpiPending">34</b><span>Conexões pendentes</span></article><article><b id="kpiIncidents">12</b><span>Pontos irregulares</span></article><article><b id="kpiRequests">18</b><span>Solicitações</span></article><article><b id="kpiConversion">50%</b><span>Taxa de conversão</span></article><article><b>1.240</b><span>m³/mês desviados do rio</span></article></div><div class="charts"><article class="card"><h3>Distribuição por situação</h3><div class="bar"><span>Conectados</span><i style="width:62%"></i><b>79</b></div><div class="bar"><span>Pendentes</span><i style="width:27%"></i><b>34</b></div><div class="bar"><span>Sem rede</span><i style="width:11%"></i><b>14</b></div></article><article class="card"><h3>Ocorrências por tipo</h3><div class="bar"><span>Esgoto aberto</span><i class="red" style="width:50%"></i><b>6</b></div><div class="bar"><span>Descarte irregular</span><i class="orange" style="width:33%"></i><b>4</b></div><div class="bar"><span>Vazamento</span><i class="blue" style="width:17%"></i><b>2</b></div></article></div></div></section>
   </main>
+  <div class="auth-modal" id="authModal" hidden>
+    <form class="auth-card" id="authForm">
+      <button class="auth-close" id="closeAuth" type="button" aria-label="Fechar">&times;</button>
+      <p class="eyebrow">Acesso operacional</p>
+      <h2>Entrar no Guaribas Limpo</h2>
+      <p class="auth-help">Use uma conta criada no painel de autenticação do Supabase.</p>
+      <label for="authEmail">E-mail</label><input id="authEmail" type="email" autocomplete="email" required>
+      <label for="authPassword">Senha</label><input id="authPassword" type="password" autocomplete="current-password" required>
+      <button class="primary" type="submit">Entrar</button>
+      <p class="auth-status" id="authStatus" role="status"></p>
+    </form>
+  </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="src/app.js"></script>
   <script src="src/config.js"></script>
   <script src="src/realtime.js"></script>
+  <script src="src/auth.js"></script>
 </body>
 </html>
