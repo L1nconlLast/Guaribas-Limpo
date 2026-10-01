@@ -19,6 +19,9 @@
   const showForgot = visible => { forgotModal.hidden = !visible; };
   const showReset = visible => { resetModal.hidden = !visible; };
   const setMessage = message => { status.textContent = message; };
+  const friendlyAuthError = error => /rate limit|email rate limit/i.test(error?.message || '')
+    ? 'Limite de e-mails atingido. Aguarde alguns minutos ou crie o usuário pelo painel do Supabase.'
+    : (error?.message || 'Não foi possível concluir a operação.');
 
   function validateRegister() {
     const name = document.getElementById('registerName').value.trim();
@@ -75,7 +78,7 @@
     const { error } = await client.auth.signUp({ email, password, options: { data: { nome: name } } });
     if (error) {
       registerSubmit.disabled = false;
-      registerValidation.textContent = error.message;
+      registerValidation.textContent = friendlyAuthError(error);
       return;
     }
     showRegister(false);
@@ -93,7 +96,7 @@
     message.textContent = 'Enviando link...';
     const redirectTo = `${window.location.origin}${window.location.pathname}`;
     const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
-    message.textContent = error ? error.message : 'Link enviado. Confira seu e-mail.';
+    message.textContent = error ? friendlyAuthError(error) : 'Link enviado. Confira seu e-mail.';
   });
 
   document.getElementById('resetForm').addEventListener('submit', async event => {
@@ -104,7 +107,7 @@
     if (password.length < 8) return message.textContent = 'A senha deve ter pelo menos 8 caracteres.';
     if (password !== confirmation) return message.textContent = 'As senhas não coincidem.';
     const { error } = await realtime().auth.updateUser({ password });
-    if (error) return message.textContent = error.message;
+    if (error) return message.textContent = friendlyAuthError(error);
     showReset(false);
     setMessage('Senha redefinida. Você já pode entrar.');
     show(true);
@@ -118,7 +121,7 @@
     if (!client) return setMessage('Supabase ainda não está disponível.');
     setMessage('Entrando...');
     const { error } = await client.auth.signInWithPassword({ email, password });
-    if (error) return setMessage(error.message);
+    if (error) return setMessage(friendlyAuthError(error));
     setMessage('Sessão iniciada.');
     show(false);
   });
