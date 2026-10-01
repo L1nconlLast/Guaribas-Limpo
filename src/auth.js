@@ -75,7 +75,8 @@
     const name = document.getElementById('registerName').value.trim();
     const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value;
-    const { error } = await client.auth.signUp({ email, password, options: { data: { nome: name } } });
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const { error } = await client.auth.signUp({ email, password, options: { data: { nome: name }, emailRedirectTo: redirectTo } });
     if (error) {
       registerSubmit.disabled = false;
       registerValidation.textContent = friendlyAuthError(error);
