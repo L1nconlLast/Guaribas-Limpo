@@ -43,6 +43,14 @@
     loginButton.textContent = user ? 'Sair' : 'Entrar';
     userLabel.textContent = user ? user.email : 'Modo demonstrativo';
     loginButton.dataset.logged = user ? 'true' : 'false';
+    if (user) loadProfile(user);
+  }
+
+  async function loadProfile(user) {
+    const client = realtime();
+    if (!client) return;
+    const { data } = await client.from('profiles').select('perfil,nome').eq('id', user.id).maybeSingle();
+    if (data) userLabel.textContent = `${data.nome || user.email} · ${data.perfil}`;
   }
 
   loginButton.addEventListener('click', async () => {
