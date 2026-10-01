@@ -9,11 +9,15 @@
   const registerForm = document.getElementById('registerForm');
   const registerSubmit = document.getElementById('registerSubmit');
   const registerValidation = document.getElementById('registerValidation');
+  const forgotModal = document.getElementById('forgotModal');
+  const resetModal = document.getElementById('resetModal');
   const realtime = () => window.GuaribasRealtime?.client;
   if (!loginButton || !modal || !form) return;
 
   const show = visible => { modal.hidden = !visible; };
   const showRegister = visible => { registerModal.hidden = !visible; };
+  const showForgot = visible => { forgotModal.hidden = !visible; };
+  const showReset = visible => { resetModal.hidden = !visible; };
   const setMessage = message => { status.textContent = message; };
 
   function validateRegister() {
@@ -49,8 +53,12 @@
   closeButton.addEventListener('click', () => show(false));
   modal.addEventListener('click', event => { if (event.target === modal) show(false); });
   document.getElementById('openRegister').addEventListener('click', () => { show(false); showRegister(true); });
+  document.getElementById('openForgot').addEventListener('click', () => { show(false); showForgot(true); });
   document.getElementById('closeRegister').addEventListener('click', () => showRegister(false));
   document.getElementById('backToLogin').addEventListener('click', () => { showRegister(false); show(true); });
+  document.getElementById('closeForgot').addEventListener('click', () => showForgot(false));
+  document.getElementById('backFromForgot').addEventListener('click', () => { showForgot(false); show(true); });
+  forgotModal.addEventListener('click', event => { if (event.target === forgotModal) showForgot(false); });
   registerModal.addEventListener('click', event => { if (event.target === registerModal) showRegister(false); });
   registerForm.querySelectorAll('input').forEach(input => input.addEventListener('input', validateRegister));
 
@@ -76,6 +84,32 @@
     registerForm.reset();
   });
 
+  document.getElementById('forgotForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const client = realtime();
+    const email = document.getElementById('forgotEmail').value.trim();
+    const message = document.getElementById('forgotStatus');
+    if (!client) return message.textContent = 'Supabase ainda não está disponível.';
+    message.textContent = 'Enviando link...';
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+    message.textContent = error ? error.message : 'Link enviado. Confira seu e-mail.';
+  });
+
+  document.getElementById('resetForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const password = document.getElementById('newPassword').value;
+    const confirmation = document.getElementById('confirmNewPassword').value;
+    const message = document.getElementById('resetStatus');
+    if (password.length < 8) return message.textContent = 'A senha deve ter pelo menos 8 caracteres.';
+    if (password !== confirmation) return message.textContent = 'As senhas não coincidem.';
+    const { error } = await realtime().auth.updateUser({ password });
+    if (error) return message.textContent = error.message;
+    showReset(false);
+    setMessage('Senha redefinida. Você já pode entrar.');
+    show(true);
+  });
+
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const email = document.getElementById('authEmail').value.trim();
@@ -91,6 +125,9 @@
 
   const client = realtime();
   if (!client) return;
-  client.auth.onAuthStateChange((_event, session) => updateSession(session));
+  client.auth.onAuthStateChange((event, session) => {
+    updateSession(session);
+    if (event === 'PASSWORD_RECOVERY') showReset(true);
+  });
   client.auth.getSession().then(({ data }) => updateSession(data.session));
 })();
