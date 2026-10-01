@@ -96,11 +96,25 @@
       <button class="primary" type="submit">Salvar nova senha</button>
     </form>
   </div>
+  <div class="auth-modal" id="occurrenceModal" hidden>
+    <form class="auth-card" id="occurrenceForm">
+      <button class="auth-close" id="closeOccurrence" type="button" aria-label="Fechar">&times;</button>
+      <p class="eyebrow">Registro de campo</p>
+      <h2>Nova ocorrência</h2>
+      <label for="occurrenceType">Tipo</label>
+      <select id="occurrenceType" required><option value="VAZAMENTO">Vazamento</option><option value="ENTUPIMENTO">Entupimento</option><option value="ESGOTO_A_CEU_ABERTO">Esgoto a céu aberto</option><option value="DESCARTE_IRREGULAR">Descarte irregular</option></select>
+      <label for="occurrenceDescription">Descrição</label><textarea id="occurrenceDescription" rows="3" required placeholder="Descreva o que foi encontrado"></textarea>
+      <div class="occurrence-coordinates"><div><label for="occurrenceLat">Latitude</label><input id="occurrenceLat" type="number" step="0.000001" value="-7.0765" required></div><div><label for="occurrenceLng">Longitude</label><input id="occurrenceLng" type="number" step="0.000001" value="-41.4671" required></div></div>
+      <p class="auth-validation" id="occurrenceStatus" role="status"></p>
+      <button class="primary" type="submit">Salvar ocorrência</button>
+    </form>
+  </div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="src/app.js"></script>
   <script src="src/config.js"></script>
   <script src="src/realtime.js"></script>
+  <script src="src/occurrences.js"></script>
   <script src="src/auth.js"></script>
 </body>
 </html>
