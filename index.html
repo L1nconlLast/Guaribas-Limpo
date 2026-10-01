@@ -10,16 +10,24 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand"><h1>Guaribas Limpo</h1><span>Dados demonstrativos</span></div>
-    <nav class="tabs" aria-label="Navegação principal">
-      <button class="tab active" data-tab="map">Mapa</button>
-      <button class="tab" data-tab="connect">Conecte sua Casa</button>
-      <button class="tab" data-tab="panel">Painel</button>
+    <div class="topbar-brand">
+      <svg class="brand-logo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 4C20 4 8 18 8 25c0 6.6 5.4 12 12 12s12-5.4 12-12C32 18 20 4 20 4Z" fill="#167c91"/>
+        <path d="M20 14c0 0 6 4 6 10 0 3-3 5-6 5s-6-2-6-5c0-6 6-10 6-10Z" fill="#4a9b58"/>
+        <path d="M20 16v11" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".75"/>
+      </svg>
+      <div class="brand-text"><h1>Guaribas Limpo</h1><span class="tagline">Mapeando a última milha, conectando famílias</span></div>
+    </div>
+    <nav class="tabs" aria-label="Navegação principal" role="tablist">
+      <button class="tab active" data-tab="map" role="tab" aria-selected="true">Mapa</button>
+      <button class="tab" data-tab="connect" role="tab" aria-selected="false">Conecte sua Casa</button>
+      <button class="tab" data-tab="panel" role="tab" aria-selected="false">Painel</button>
     </nav>
+    <span class="badge-demo">Dados demonstrativos</span>
   </header>
 
   <main>
-    <section id="page-map" class="page active-page">
+    <section id="page-map" class="page active">
       <aside class="sidebar">
         <input id="search" class="search" type="search" placeholder="Buscar endereço ou ID..." aria-label="Buscar">
         <h2>Camadas visíveis</h2>
